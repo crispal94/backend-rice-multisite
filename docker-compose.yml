@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: medusa-db-container
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: pgadmin
+      POSTGRES_PASSWORD: pgadmin
+      POSTGRES_DB: medusa-db
+    volumes:
+      # CAMBIO IMPORTANTE: Ya no usamos ./postgres-data
+      - medusa_data:/var/lib/postgresql/data
+
+# Nueva sección al final del archivo
+volumes:
+  medusa_data:
