@@ -24,8 +24,13 @@
   "dependencies": {
     "@medusajs/admin-sdk": "2.12.6",
     "@medusajs/cli": "2.12.6",
+    "@medusajs/dashboard": "^2.13.1",
     "@medusajs/framework": "2.12.6",
-    "@medusajs/medusa": "2.12.6"
+    "@medusajs/icons": "^2.13.1",
+    "@medusajs/medusa": "2.12.6",
+    "@medusajs/types": "^2.13.1",
+    "@medusajs/ui": "^4.1.1",
+    "@medusajs/utils": "^2.13.1"
   },
   "devDependencies": {
     "@medusajs/test-utils": "2.12.6",
