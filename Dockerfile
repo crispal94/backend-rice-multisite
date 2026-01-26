@@ -1,24 +1,30 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* bun.lockb* ./
+# 1. Instalamos pnpm globalmente y herramientas de compilación básicas
+# (python y make a veces son necesarios para dependencias nativas de Medusa)
+RUN apk add --no-cache python3 make g++
+RUN npm install -g pnpm
 
-# --- CORRECCIÓN CLAVE ---
-# Le decimos a Docker que todo lo que haga de aquí en adelante es para Producción.
-# Esto asegura que 'bun run build' genere el index.html donde debe estar.
-ENV NODE_ENV=production
-# ------------------------
+# 2. Copiamos los archivos de dependencias
+# Nota: Copiamos package-lock.json también por si acaso no generaste el de pnpm aún
+COPY package.json pnpm-lock.yaml* package-lock.json* ./
 
-# Instalamos dependencias (incluyendo devDependencies para poder construir)
-RUN npm install -g bun
-# Usamos --no-cache para asegurar una instalación limpia
-RUN bun install
+# 3. Instalamos dependencias
+# Usamos --no-frozen-lockfile para que no falle si no tienes el pnpm-lock.yaml todavía
+RUN pnpm install --no-frozen-lockfile
 
+# 4. Copiamos el resto del código
 COPY . .
 
-# Construimos el backend y el panel de admin
-RUN bun run build
+# 5. CONFIGURACIÓN CRÍTICA DE PRODUCCIÓN
+ENV NODE_ENV=production
 
-# El comando de inicio (usará el script 'start' que modificaste en el package.json)
-CMD ["bun", "start"]
+# 6. Construimos el proyecto (Admin + Backend)
+# Al usar pnpm run build, se ejecuta "medusa build" en un entorno limpio
+RUN pnpm run build
+
+# 7. Comando de arranque
+# Ejecutará tu script "start" del package.json (el que tiene las migraciones)
+CMD ["pnpm", "start"]
