@@ -11,14 +11,16 @@ RUN pnpm install --no-frozen-lockfile --shamefully-hoist
 
 COPY . .
 
-# >>>>> ¡ESTA ES LA LÍNEA MÁGICA! <<<<<
-# Borramos la carpeta .medusa que viene de tu PC para evitar conflictos de Windows vs Linux
 RUN rm -rf .medusa
-# >>>>> ------------------------- <<<<<
 
 ENV NODE_ENV=production
 
-# Ahora construimos de cero en limpio
+# 1) Build de producción
 RUN npx medusa build
 
-CMD ["pnpm", "start"]
+# 2) Instalar dependencias dentro del build generado
+WORKDIR /app/.medusa/server
+RUN pnpm install --prod --ignore-scripts
+
+# 3) Comando de arranque: desde .medusa/server
+CMD ["pnpm", "medusa", "start", "-H", "0.0.0.0"]
