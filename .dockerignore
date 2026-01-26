@@ -1,0 +1,10 @@
+.git
+.github
+.vscode
+.medusa
+node_modules
+dist
+build
+.env
+.env.*
+Dockerfile
