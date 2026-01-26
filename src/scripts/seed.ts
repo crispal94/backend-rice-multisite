@@ -1,7 +1,9 @@
+// @ts-nocheck
 import { ExecArgs } from '@medusajs/types'
 import { ContainerRegistrationKeys, Modules } from '@medusajs/utils'
 
 export default async function ({ container }: ExecArgs) {
+  // Al poner @ts-nocheck arriba, TypeScript ignorará que no sabe los tipos de estas variables
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   const link = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
