@@ -53,7 +53,7 @@ export default async function ({ container }: ExecArgs) {
     {
       prices: [
         {
-          amount: 4500, // $45.00
+          amount: 45, // $45.00
           currency_code: 'usd',
           rules: {} // Aquí irían reglas complejas si las hubiera
         }
