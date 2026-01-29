@@ -24,4 +24,5 @@ RUN pnpm install --prod --ignore-scripts
 
 # 3) Comando de arranque: desde .medusa/server
 # Usamos el formato Shell (sin corchetes []) para permitir concatenar comandos
-CMD /bin/sh -c "pnpm medusa exec ./src/scripts/seed.js && pnpm medusa start -H 0.0.0.0"
+# Comando de depuración para ver dónde quedaron los archivos
+CMD find . -name "seed.js" && pnpm medusa start -H 0.0.0.0
